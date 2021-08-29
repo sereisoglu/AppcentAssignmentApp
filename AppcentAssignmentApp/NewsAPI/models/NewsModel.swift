@@ -8,17 +8,17 @@
 import Foundation
 
 public struct NewsModel: Decodable {
-    var source: NewsSourceModel?
-    var author: String?
-    var title: String?
-    var description: String?
-    var url: String?
-    var urlToImage: String?
-    var publishedAt: String?
-    var content: String?
+    public var source: NewsSourceModel?
+    public var author: String?
+    public var title: String?
+    public var description: String?
+    public var url: String?
+    public var urlToImage: String?
+    public var publishedAt: String?
+    public var content: String?
 }
 
 public struct NewsSourceModel: Decodable {
-    var id:String?
-    var name: String?
+    public var id:String?
+    public var name: String?
 }

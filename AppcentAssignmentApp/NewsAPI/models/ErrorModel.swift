@@ -8,11 +8,11 @@
 import Foundation
 
 public struct ErrorModel: Decodable, Error {
-    var title: String?
+    public var title: String?
     
-    var status: String?
-    var code: String?
-    var message: String?
+    public var status: String?
+    public var code: String?
+    public var message: String?
     
     enum CodingKeys: String, CodingKey {
         case status

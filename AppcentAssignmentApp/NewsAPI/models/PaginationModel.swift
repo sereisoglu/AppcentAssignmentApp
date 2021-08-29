@@ -8,18 +8,18 @@
 import Foundation
 
 public struct PaginationModel<T: Decodable>: Decodable {
-    private(set) var itemCount: Int = 0
-    private(set) var items = [T]()
+    public private(set) var itemCount: Int = 0
+    public private(set) var items = [T]()
     
-    private(set) var page: Int = 1
-    var pageCount: Int {
+    public private(set) var page: Int = 1
+    public var pageCount: Int {
         get {
             return Int(ceil(Double(itemCount) / Double(APIService.shared.API_PAGE_LIMIT)))
         }
     }
     
-    private(set) var isPaginating = false
-    private(set) var isDonePaginating = false
+    public private(set) var isPaginating = false
+    public private(set) var isDonePaginating = false
     
     enum CodingKeys: String, CodingKey {
         case itemCount = "totalResults"
