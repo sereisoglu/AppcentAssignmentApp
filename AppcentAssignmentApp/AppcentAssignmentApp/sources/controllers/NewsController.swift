@@ -26,24 +26,24 @@ class NewsController: UIViewController {
         
         view.backgroundColor = .white
         
-        APIService.shared.request(
-            endpoint: .everything(
-                query: "car",
-                languageCode: LocalizationUtility.getLanguageCode()
-            ),
-            page: 1
-        ) { [weak self] (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
-            guard let self = self else {
-                return
-            }
-
-            switch result {
-            case .success(let data):
-                print(data)
-
-            case .failure(let error):
-                print(error)
-            }
-        }
+//        APIService.shared.request(
+//            endpoint: .everything(
+//                query: "car",
+//                languageCode: LocalizationUtility.getLanguageCode()
+//            ),
+//            page: 1
+//        ) { [weak self] (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            switch result {
+//            case .success(let data):
+//                print(data)
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }
