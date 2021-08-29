@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,9 @@
 		4AA6BBA126DB8D2D00AC8D96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AA6BBA026DB8D2D00AC8D96 /* Assets.xcassets */; };
 		4AA6BBA426DB8D2D00AC8D96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AA6BBA226DB8D2D00AC8D96 /* LaunchScreen.storyboard */; };
 		4AA6BBAF26DB94AE00AC8D96 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AA6BBAE26DB94AE00AC8D96 /* Colors.xcassets */; };
+		4AA6BBB226DB97A800AC8D96 /* LBTATools in Frameworks */ = {isa = PBXBuildFile; productRef = 4AA6BBB126DB97A800AC8D96 /* LBTATools */; };
+		4AA6BBB526DB97B900AC8D96 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4AA6BBB426DB97B900AC8D96 /* Alamofire */; };
+		4AA6BBB826DB97C200AC8D96 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 4AA6BBB726DB97C200AC8D96 /* Nuke */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA6BBB826DB97C200AC8D96 /* Nuke in Frameworks */,
+				4AA6BBB226DB97A800AC8D96 /* LBTATools in Frameworks */,
+				4AA6BBB526DB97B900AC8D96 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +110,11 @@
 			dependencies = (
 			);
 			name = AppcentAssignmentApp;
+			packageProductDependencies = (
+				4AA6BBB126DB97A800AC8D96 /* LBTATools */,
+				4AA6BBB426DB97B900AC8D96 /* Alamofire */,
+				4AA6BBB726DB97C200AC8D96 /* Nuke */,
+			);
 			productName = AppcentAssignmentApp;
 			productReference = 4AA6BB9426DB8D2C00AC8D96 /* AppcentAssignmentApp.app */;
 			productType = "com.apple.product-type.application";
@@ -131,6 +142,11 @@
 				Base,
 			);
 			mainGroup = 4AA6BB8B26DB8D2C00AC8D96;
+			packageReferences = (
+				4AA6BBB026DB97A800AC8D96 /* XCRemoteSwiftPackageReference "LBTATools" */,
+				4AA6BBB326DB97B900AC8D96 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4AA6BBB626DB97C200AC8D96 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
 			productRefGroup = 4AA6BB9526DB8D2C00AC8D96 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -355,6 +371,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4AA6BBB026DB97A800AC8D96 /* XCRemoteSwiftPackageReference "LBTATools" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bhlvoong/LBTATools.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.17;
+			};
+		};
+		4AA6BBB326DB97B900AC8D96 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.3;
+			};
+		};
+		4AA6BBB626DB97C200AC8D96 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4AA6BBB126DB97A800AC8D96 /* LBTATools */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AA6BBB026DB97A800AC8D96 /* XCRemoteSwiftPackageReference "LBTATools" */;
+			productName = LBTATools;
+		};
+		4AA6BBB426DB97B900AC8D96 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AA6BBB326DB97B900AC8D96 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		4AA6BBB726DB97C200AC8D96 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AA6BBB626DB97C200AC8D96 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4AA6BB8C26DB8D2C00AC8D96 /* Project object */;
 }
