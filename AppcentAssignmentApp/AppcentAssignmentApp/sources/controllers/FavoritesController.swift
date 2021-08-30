@@ -106,6 +106,19 @@ extension FavoritesController {
             return 300
         }
     }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(
+            style: .destructive,
+            title: "Delete"
+        ) { _, indexPath in
+            self.viewModel.delete(index: indexPath.row)
+        }
+        
+        return [
+            deleteAction
+        ]
+    }
 }
 
 // MARK: - FavoritesViewModelDelegate
@@ -114,6 +127,8 @@ extension FavoritesController: FavoritesViewModelDelegate {
     func getDataForFavoritesViewModel() {
         if viewModel.state == .data {
             tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
         }
         
         tableView.reloadData()

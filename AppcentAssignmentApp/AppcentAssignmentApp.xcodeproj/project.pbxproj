@@ -235,12 +235,12 @@
 		4A36A55526DBB4020077BC67 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4A36A53C26DBA80B0077BC67 /* Collection+Extension.swift */,
 				4A36A53E26DBA8150077BC67 /* UIView+Extension.swift */,
 				4A36A54026DBA8200077BC67 /* UIImageView+Extension.swift */,
 				4A36A54626DBA8E40077BC67 /* UIEdgeInsets+Extension.swift */,
 				4A36A54C26DBB1380077BC67 /* UINavigationController+Extension.swift */,
 				4A36A56926DBF0FD0077BC67 /* DateFormatter+Extension.swift */,
+				4A36A53C26DBA80B0077BC67 /* Collection+Extension.swift */,
 				4A684E3926DCF60F00C745BE /* NotificationName+Extension.swift */,
 			);
 			path = extensions;

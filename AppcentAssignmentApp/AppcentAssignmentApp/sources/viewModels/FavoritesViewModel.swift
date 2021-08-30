@@ -61,6 +61,16 @@ final class FavoritesViewModel {
         delegate?.getDataForFavoritesViewModel()
     }
     
+    func delete(index: Int) {
+        guard let news = data[safe: index] else {
+            return
+        }
+        
+        data.remove(at: index)
+        
+        CoreDataManager.shared.deleteNews(id: news.id)
+    }
+    
     deinit {
         observers.forEach { (observer) in
             NotificationCenter.default.removeObserver(observer)

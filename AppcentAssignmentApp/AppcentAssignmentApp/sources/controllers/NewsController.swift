@@ -243,6 +243,8 @@ extension NewsController: NewsViewModelDelegate {
         
         if viewModelState == .data {
             tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
         }
         
         tableView.reloadData()
@@ -273,6 +275,8 @@ extension NewsController: SearchResultsViewModelDelegate {
 
         if viewModelState == .data {
             tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
         }
 
         tableView.reloadData()
