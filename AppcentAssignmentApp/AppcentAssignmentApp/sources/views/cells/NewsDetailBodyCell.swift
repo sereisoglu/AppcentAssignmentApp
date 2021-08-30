@@ -28,12 +28,12 @@ final class NewsDetailBodyCell: UITableViewCell {
         
         authorHolderView.hstack(
             authorIconView,
-            authorLabel, spacing: Sizing.space2pt, alignment: .center
+            authorLabel, spacing: Sizing.space5pt, alignment: .center
         )
         
         dateHolderView.hstack(
             dateIconView,
-            dateLabel, spacing: Sizing.space2pt, alignment: .center
+            dateLabel, spacing: Sizing.space5pt, alignment: .center
         )
         
         stack(

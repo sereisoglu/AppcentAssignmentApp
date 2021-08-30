@@ -13,10 +13,12 @@ final class NewsDetailController: UITableViewController {
     private let bodyCellId = "bodyCellId"
     private let redirectCellId = "redirectCellId"
     
+    private var isFavorite: Bool
     private let data: NewsModel
     
     init(data: NewsModel) {
         self.data = data
+        self.isFavorite = FavoriteManager.shared.isFavorite(id: data.id)
         
         super.init(style: .grouped)
     }
@@ -37,14 +39,27 @@ final class NewsDetailController: UITableViewController {
         tableView.alwaysBounceVertical = true
         tableView.separatorStyle = .none
         
+        setUpRightBarButtonItems()
+    }
+    
+    private func setUpRightBarButtonItems() {
         navigationItem.rightBarButtonItems = [
-            .init(image: Icon.heart.value, style: .plain, target: self, action: #selector(handleFavoriteButton)),
+            .init(image: isFavorite ? Icon.heartFill.value : Icon.heart.value, style: .plain, target: self, action: #selector(handleFavoriteButton)),
             .init(image: Icon.squareAndArrowUp.value, style: .plain, target: self, action: #selector(handleShareButton))
         ]
     }
     
     @objc
     private func handleFavoriteButton() {
+        isFavorite.toggle()
+        
+        if isFavorite {
+            FavoriteManager.shared.append(news: data)
+        } else {
+            FavoriteManager.shared.remove(id: data.id)
+        }
+        
+        setUpRightBarButtonItems()
     }
     
     @objc
@@ -78,7 +93,7 @@ extension NewsDetailController {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId, for: indexPath) as! NewsDetailHeaderCell
             
-            cell.setData(imageUrl: data.urlToImage)
+            cell.setData(imageUrl: data.imageUrl)
             
             return cell
             
@@ -126,7 +141,7 @@ extension NewsDetailController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            if let _ = data.urlToImage {
+            if let _ = data.imageUrl {
                 return Sizing.imageViewDetail.height
             } else {
                 return UITableView.automaticDimension
