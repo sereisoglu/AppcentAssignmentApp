@@ -9,7 +9,7 @@ import Foundation
 import NewsAPI
 
 protocol NewsViewModelDelegate: AnyObject {
-    func getData(error: ErrorModel?)
+    func getDataForNewsViewModel(error: ErrorModel?)
 }
 
 final class NewsViewModel {
@@ -45,7 +45,7 @@ final class NewsViewModel {
                 
                 self.data = data
                 
-                self.delegate?.getData(error: nil)
+                self.delegate?.getDataForNewsViewModel(error: nil)
                 
             case .failure(let error):
                 self.state = .emptyOrError(
@@ -53,7 +53,7 @@ final class NewsViewModel {
                     messageText: error.message ?? "An error has occurred."
                 )
                 
-                self.delegate?.getData(error: error)
+                self.delegate?.getDataForNewsViewModel(error: error)
             }
         }
     }
@@ -76,7 +76,7 @@ final class NewsViewModel {
             case .success(let data):
                 self.data?.appendItems(items: data?.items)
                 
-                self.delegate?.getData(error: nil)
+                self.delegate?.getDataForNewsViewModel(error: nil)
                 
             case .failure(let error):
                 self.state = .emptyOrError(
@@ -84,7 +84,7 @@ final class NewsViewModel {
                     messageText: error.message ?? "An error has occurred."
                 )
                 
-                self.delegate?.getData(error: error)
+                self.delegate?.getDataForNewsViewModel(error: error)
             }
             
             self.data?.setIsPaginating(isPaginating: false)

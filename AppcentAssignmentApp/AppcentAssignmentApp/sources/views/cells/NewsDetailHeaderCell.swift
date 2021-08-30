@@ -9,7 +9,7 @@ import UIKit
 import LBTATools
 
 final class NewsDetailHeaderCell: UITableViewCell {
-    private let newsImageView = NewsImageView()
+    private let newsImageView = PhotoView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

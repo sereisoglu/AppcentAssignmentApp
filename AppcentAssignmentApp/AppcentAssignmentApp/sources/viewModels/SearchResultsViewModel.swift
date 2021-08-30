@@ -9,7 +9,7 @@ import Foundation
 import NewsAPI
 
 protocol SearchResultsViewModelDelegate: AnyObject {
-    func getData(error: ErrorModel?)
+    func getDataForSearchResultsViewModel(error: ErrorModel?)
 }
 
 final class SearchResultsViewModel {
@@ -59,7 +59,7 @@ final class SearchResultsViewModel {
 
                 self.data = data
 
-                self.delegate?.getData(error: nil)
+                self.delegate?.getDataForSearchResultsViewModel(error: nil)
 
             case .failure(let error):
                 self.state = .emptyOrError(
@@ -67,7 +67,7 @@ final class SearchResultsViewModel {
                     messageText: error.message ?? "An error has occurred."
                 )
 
-                self.delegate?.getData(error: error)
+                self.delegate?.getDataForSearchResultsViewModel(error: error)
             }
         }
     }
@@ -94,7 +94,7 @@ final class SearchResultsViewModel {
             case .success(let data):
                 self.data?.appendItems(items: data?.items)
                 
-                self.delegate?.getData(error: nil)
+                self.delegate?.getDataForSearchResultsViewModel(error: nil)
 
             case .failure(let error):
                 self.state = .emptyOrError(
@@ -102,7 +102,7 @@ final class SearchResultsViewModel {
                     messageText: error.message ?? "An error has occurred."
                 )
 
-                self.delegate?.getData(error: error)
+                self.delegate?.getDataForSearchResultsViewModel(error: error)
             }
 
             self.data?.setIsPaginating(isPaginating: false)

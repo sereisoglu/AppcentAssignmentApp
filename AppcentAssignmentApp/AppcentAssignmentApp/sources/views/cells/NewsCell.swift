@@ -9,7 +9,9 @@ import UIKit
 import LBTATools
 
 final class NewsCell: UITableViewCell {
-    private let newsImageView = NewsImageView()
+    private let photoHolderView = UIView()
+    private let photoView = PhotoView()
+    
     private let titleLabel = Label(text: nil, type: .body1, weight: .bold, color: .tintPrimary, numberOfLines: 0)
     private let descriptionLabel = Label(text: nil, type: .body2, weight: .medium, color: .tintSecondary, numberOfLines: 2)
     private let sourceAndDateLabel = Label(text: nil, type: .body3, weight: .medium, color: .tintTertiary)
@@ -17,16 +19,18 @@ final class NewsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        photoHolderView.stack(
+            photoView.withSize(Sizing.imageViewSmall),
+            UIView()
+        )
+        
         stack(
             hstack(
                 stack(
                     titleLabel,
                     descriptionLabel
                 ),
-                stack(
-                    newsImageView.withSize(Sizing.imageViewSmall),
-                    UIView()
-                ), spacing: Sizing.space10pt, alignment: .top
+                photoHolderView, spacing: Sizing.space10pt, alignment: .top
             ),
             sourceAndDateLabel
         ).withMargins(.linearSides(v: Sizing.space11pt, h: Sizing.space16pt))
@@ -35,7 +39,7 @@ final class NewsCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        newsImageView.imageDownloadCancel()
+        photoView.imageDownloadCancel()
     }
     
     func setData(
@@ -44,7 +48,13 @@ final class NewsCell: UITableViewCell {
         descriptionText: String?,
         sourceAndDateText: String?
     ) {
-        newsImageView.setData(imageUrl: imageUrl)
+        if let imageUrl = imageUrl {
+            photoHolderView.isHidden = false
+            
+            photoView.setData(imageUrl: imageUrl)
+        } else {
+            photoHolderView.isHidden = true
+        }
         
         titleLabel.setData(text: titleText)
         

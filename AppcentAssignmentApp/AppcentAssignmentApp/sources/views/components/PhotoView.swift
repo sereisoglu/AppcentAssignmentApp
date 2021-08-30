@@ -1,5 +1,5 @@
 //
-//  NewsImageView.swift
+//  PhotoView.swift
 //  AppcentAssignmentApp
 //
 //  Created by Saffet Emin Reisoğlu on 29.08.2021.
@@ -9,7 +9,7 @@ import UIKit
 import LBTATools
 import Nuke
 
-final class NewsImageView: UIView {
+final class PhotoView: UIView {
     private let iconView = IconImageView(size: .pt30, icon: .photo, tintColor: .tintSecondary)
     private let imageView = UIImageView(contentMode: .scaleAspectFill)
     

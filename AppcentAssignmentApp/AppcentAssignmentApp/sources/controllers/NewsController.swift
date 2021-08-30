@@ -9,23 +9,54 @@ import UIKit
 import NewsAPI
 
 final class NewsController: UITableViewController {
+    enum State {
+        case `default`
+        case search
+    }
+    
     private let headerCellId = "headerCellId"
     private let cellId = "cellId"
     private let informingCellId = "informingCellId"
     private let footerCellId = "footerCellId"
     
-    private let viewModel: NewsViewModel
+    private var state: State = .default
     
-    private let searchResultsController = SearchResultsController()
+    private let newsViewModel: NewsViewModel
+    
+    private let searchResultsViewModel: SearchResultsViewModel
+    
+    private var viewModelState: InformingState {
+        get {
+            switch state {
+            case .default:
+                return newsViewModel.state
+            case .search:
+                return searchResultsViewModel.state
+            }
+        }
+    }
+    
+    private var viewModelData: PaginationModel<NewsModel>? {
+        get {
+            switch state {
+            case .default:
+                return newsViewModel.data
+            case .search:
+                return searchResultsViewModel.data
+            }
+        }
+    }
     
     private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: searchResultsController)
+        let controller = UISearchController(searchResultsController: nil)
         controller.searchBar.placeholder = "Search for news"
+        controller.obscuresBackgroundDuringPresentation = false
         return controller
     }()
     
     init() {
-        viewModel = NewsViewModel()
+        newsViewModel = NewsViewModel()
+        searchResultsViewModel = SearchResultsViewModel()
         
         super.init(style: .grouped)
     }
@@ -52,9 +83,10 @@ final class NewsController: UITableViewController {
         
         searchController.searchBar.delegate = self
         
-        viewModel.delegate = self
+        newsViewModel.delegate = self
+        searchResultsViewModel.delegate = self
         
-        viewModel.fetchData()
+        newsViewModel.fetchData()
     }
     
     required init?(coder: NSCoder) {
@@ -66,9 +98,9 @@ final class NewsController: UITableViewController {
 
 extension NewsController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch viewModel.state {
+        switch viewModelState {
         case .data:
-            return viewModel.data?.items.count ?? 0
+            return viewModelData?.items.count ?? 0
             
         case .emptyOrError,
              .loading:
@@ -77,11 +109,11 @@ extension NewsController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch viewModel.state {
+        switch viewModelState {
         case .data:
             let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! NewsCell
             
-            if let item = viewModel.data?.items[safe: indexPath.item] {
+            if let item = viewModelData?.items[safe: indexPath.item] {
                 cell.setData(
                     imageUrl: item.urlToImage,
                     titleText: item.title ?? "No title",
@@ -96,14 +128,14 @@ extension NewsController {
              .loading:
             let cell = tableView.dequeueReusableCell(withIdentifier: informingCellId, for: indexPath) as! InformingCell
             
-            cell.setState(viewModel.state)
+            cell.setState(viewModelState)
             
             return cell
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let data = viewModel.data?.items[safe: indexPath.item] else {
+        guard let data = viewModelData?.items[safe: indexPath.item] else {
             return
         }
         
@@ -114,7 +146,7 @@ extension NewsController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch viewModel.state {
+        switch viewModelState {
         case .data:
             return UITableView.automaticDimension
             
@@ -127,7 +159,16 @@ extension NewsController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerCellId) as! NewsHeaderCell
         
-        header.setData(text: "Top Headlines (\(LocalizationUtility.getRegionCode().uppercased()))")
+        switch state {
+        case .default:
+            header.setData(text: "Top Headlines (\(LocalizationUtility.getRegionCode().uppercased()))")
+        case .search:
+            if let itemCount = viewModelData?.itemCount {
+                header.setData(text: "Search (\(itemCount))")
+            } else {
+                header.setData(text: "Search")
+            }
+        }
         
         return header
     }
@@ -143,15 +184,15 @@ extension NewsController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerCellId) as! FooterCell
         
-        footer.setData(animating: !(viewModel.data?.isDonePaginating ?? true))
+        footer.setData(animating: !(viewModelData?.isDonePaginating ?? true))
         
         return footer
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard viewModel.state == .data,
-              viewModel.data?.items.isNotEmpty ?? false,
-              !(viewModel.data?.isDonePaginating ?? true) else {
+        guard viewModelState == .data,
+              viewModelData?.items.isNotEmpty ?? false,
+              !(viewModelData?.isDonePaginating ?? true) else {
             return .zero
         }
         
@@ -159,24 +200,33 @@ extension NewsController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let count = viewModel.data?.items.count ?? 0
+        let count = viewModelData?.items.count ?? 0
         
-        guard viewModel.state == .data,
+        guard viewModelState == .data,
               count > 0,
-              !(viewModel.data?.isPaginating ?? true),
-              !(viewModel.data?.isDonePaginating ?? true),
+              !(viewModelData?.isPaginating ?? true),
+              !(viewModelData?.isDonePaginating ?? true),
               indexPath.item >= count - 1 else {
             return
         }
         
-        viewModel.fetchDataForPagination()
+        switch state {
+        case .default:
+            newsViewModel.fetchDataForPagination()
+        case .search:
+            searchResultsViewModel.fetchDataForPagination()
+        }
     }
 }
 
 // MARK: - NewsViewModelDelegate
 
 extension NewsController: NewsViewModelDelegate {
-    func getData(error: ErrorModel?) {
+    func getDataForNewsViewModel(error: ErrorModel?) {
+        guard state == .default else {
+            return
+        }
+        
         guard error == nil else {
             print(error?.message ?? "")
             
@@ -191,10 +241,40 @@ extension NewsController: NewsViewModelDelegate {
             return
         }
         
-        if viewModel.state == .data {
+        if viewModelState == .data {
             tableView.separatorStyle = .singleLine
         }
         
+        tableView.reloadData()
+    }
+}
+
+// MARK: - SearchResultsViewModelDelegate
+
+extension NewsController: SearchResultsViewModelDelegate {
+    func getDataForSearchResultsViewModel(error: ErrorModel?) {
+        guard state == .search else {
+            return
+        }
+        
+        guard error == nil else {
+            print(error?.message ?? "")
+
+            AlertUtility.present(
+                title: error?.title ?? "API Error",
+                message: error?.message ?? "An error has occurred.",
+                delegate: self
+            )
+
+            tableView.reloadData()
+
+            return
+        }
+
+        if viewModelState == .data {
+            tableView.separatorStyle = .singleLine
+        }
+
         tableView.reloadData()
     }
 }
@@ -203,16 +283,30 @@ extension NewsController: NewsViewModelDelegate {
 
 extension NewsController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchResultsController.searchButtonTapped(searchBar)
+        guard let text = searchBar.text else {
+            return
+        }
+        
+        state = .search
+        
+        tableView.separatorStyle = .none
+        
+        searchResultsViewModel.fetchData(query: text)
+        
+        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchResultsController.cancelButtonTapped(searchBar)
+        state = .default
+        
+        searchResultsViewModel.reset()
+        
+        tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
-            searchResultsController.cancelButtonTapped(searchBar)
+            searchBarCancelButtonClicked(searchBar)
         }
     }
 }

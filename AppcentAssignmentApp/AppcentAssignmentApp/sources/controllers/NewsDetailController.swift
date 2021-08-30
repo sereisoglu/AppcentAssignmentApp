@@ -126,7 +126,11 @@ extension NewsDetailController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            return Sizing.imageViewDetail.height
+            if let _ = data.urlToImage {
+                return Sizing.imageViewDetail.height
+            } else {
+                return UITableView.automaticDimension
+            }
             
         default:
             return UITableView.automaticDimension
