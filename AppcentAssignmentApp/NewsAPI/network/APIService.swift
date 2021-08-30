@@ -13,8 +13,13 @@ public final class APIService {
     public static let shared = APIService()
     
     let BASE_URL = "https://newsapi.org"
-    let API_KEY = "API_KEY"
-    let API_PAGE_LIMIT = 20
+    var API_KEY = ""
+    var API_PAGE_LIMIT = 0
+    
+    public func setUp(apiKey: String, pageLimit: Int) {
+        self.API_KEY = apiKey
+        self.API_PAGE_LIMIT = pageLimit
+    }
     
     public func request<T: Decodable>(
         endpoint: Endpoint,

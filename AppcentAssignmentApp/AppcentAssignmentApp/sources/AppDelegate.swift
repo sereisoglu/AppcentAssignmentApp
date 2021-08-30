@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NewsAPI
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         CoreDataManager.shared.fetchData()
+        
+        APIService.shared.setUp(
+            apiKey: "API_KEY",
+            pageLimit: 20
+        )
         
         window?.rootViewController = TabBarController()
         
