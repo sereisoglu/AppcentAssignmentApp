@@ -10,24 +10,51 @@ import XCTest
 
 class NewsAPITests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func test_TopHeadlines_Success() {
+        let expectation = expectation(description: "test_TopHeadlines_Success")
+        
+        APIService.shared.request(
+            endpoint: .topHeadlines(
+                countryCode: "us"
+            ),
+            page: 1
+        ) { (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
+            switch result {
+            case .success(let data):
+                XCTAssertNotNil(data)
+                
+            case .failure(let error):
+                XCTAssertNil(error)
+            }
+            
+            expectation.fulfill()
         }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func test_Everything_Success() {
+        let expectation = expectation(description: "test_Everything_Success")
+        
+        APIService.shared.request(
+            endpoint: .everything(
+                query: "car crash",
+                languageCode: "en"
+            ),
+            page: 1
+        ) { (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
+            switch result {
+            case .success(let data):
+                XCTAssertNotNil(data)
+                
+            case .failure(let error):
+                XCTAssertNil(error)
+            }
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
 }
