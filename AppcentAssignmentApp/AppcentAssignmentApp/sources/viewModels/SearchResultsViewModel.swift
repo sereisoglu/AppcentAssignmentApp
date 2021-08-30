@@ -34,7 +34,7 @@ final class SearchResultsViewModel {
 
         state = .loading
 
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .everything(
                 query: query,
                 languageCode: LocalizationUtility.getLanguageCode()
@@ -78,7 +78,7 @@ final class SearchResultsViewModel {
         data?.setIsPaginating(isPaginating: true)
         data?.increasePage()
 
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .everything(
                 query: query,
                 languageCode: LocalizationUtility.getLanguageCode()

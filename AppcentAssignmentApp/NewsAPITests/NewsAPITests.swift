@@ -13,7 +13,7 @@ class NewsAPITests: XCTestCase {
     func test_TopHeadlines_Success() {
         let expectation = expectation(description: "test_TopHeadlines_Success")
         
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .topHeadlines(
                 countryCode: "us"
             ),
@@ -36,7 +36,7 @@ class NewsAPITests: XCTestCase {
     func test_Everything_Success() {
         let expectation = expectation(description: "test_Everything_Success")
         
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .everything(
                 query: "car crash",
                 languageCode: "en"

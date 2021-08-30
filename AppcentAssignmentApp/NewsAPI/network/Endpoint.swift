@@ -15,7 +15,7 @@ public enum Endpoint: Equatable {
 
 extension Endpoint {
     var urlString: String {
-        return "\(APIService.shared.BASE_URL)/\(version)/\(path)"
+        return "\(NewsAPI.shared.BASE_URL)/\(version)/\(path)"
     }
     
     var version: String {
@@ -64,16 +64,16 @@ extension Endpoint {
         switch self {
         case .topHeadlines(let countryCode):
             return [
-                "apiKey": APIService.shared.API_KEY,
-                "pageSize": APIService.shared.API_PAGE_LIMIT,
+                "apiKey": NewsAPI.shared.API_KEY,
+                "pageSize": NewsAPI.shared.API_PAGE_LIMIT,
                 "country": countryCode,
                 "category": "general"
             ]
             
         case .everything(let query, let languageCode):
             return [
-                "apiKey": APIService.shared.API_KEY,
-                "pageSize": APIService.shared.API_PAGE_LIMIT,
+                "apiKey": NewsAPI.shared.API_KEY,
+                "pageSize": NewsAPI.shared.API_PAGE_LIMIT,
                 "language": languageCode,
                 "sortBy": "relevant",
                 "q": query

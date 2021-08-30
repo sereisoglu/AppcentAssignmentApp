@@ -1,5 +1,5 @@
 //
-//  APIService.swift
+//  NewsAPI.swift
 //  NewsAPI
 //
 //  Created by Saffet Emin Reisoğlu on 29.08.2021.
@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-public final class APIService {
+public final class NewsAPI {
     private init() {}
-    public static let shared = APIService()
+    public static let shared = NewsAPI()
     
     let BASE_URL = "https://newsapi.org"
     var API_KEY = ""

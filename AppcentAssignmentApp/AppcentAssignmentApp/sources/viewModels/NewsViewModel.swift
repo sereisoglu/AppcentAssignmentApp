@@ -22,7 +22,7 @@ final class NewsViewModel {
     func fetchData() {
         state = .loading
         
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .topHeadlines(
                 countryCode: LocalizationUtility.getRegionCode()
             ),
@@ -62,7 +62,7 @@ final class NewsViewModel {
         data?.setIsPaginating(isPaginating: true)
         data?.increasePage()
         
-        APIService.shared.request(
+        NewsAPI.shared.request(
             endpoint: .topHeadlines(
                 countryCode: LocalizationUtility.getRegionCode()
             ),

@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         CoreDataManager.shared.fetchData()
         
-        APIService.shared.setUp(
+        NewsAPI.shared.setUp(
             apiKey: "API_KEY",
             pageLimit: 20
         )

@@ -14,7 +14,7 @@ public struct PaginationModel<T: Decodable>: Decodable {
     public private(set) var page: Int = 1
     public var pageCount: Int {
         get {
-            return Int(ceil(Double(itemCount) / Double(APIService.shared.API_PAGE_LIMIT)))
+            return Int(ceil(Double(itemCount) / Double(NewsAPI.shared.API_PAGE_LIMIT)))
         }
     }
     
