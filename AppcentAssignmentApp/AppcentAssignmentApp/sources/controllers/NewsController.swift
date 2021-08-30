@@ -115,10 +115,10 @@ extension NewsController {
             
             if let item = viewModelData?.items[safe: indexPath.item] {
                 cell.setData(
-                    imageUrl: item.urlToImage,
+                    imageUrl: item.imageUrl,
                     titleText: item.title ?? "No title",
                     descriptionText: item.description,
-                    sourceAndDateText: "\(item.source?.name ?? "") • \(DateUtility.stringFormat(convertType: .monthAndDayAndYearAndDayNameAndTime, dateString: item.publishedAt) ?? "")"
+                    sourceAndDateText: "\(item.sourceName ?? "") • \(DateUtility.stringFormat(convertType: .monthAndDayAndYearAndDayNameAndTime, dateString: item.publishedAt) ?? "")"
                 )
             }
             
@@ -243,6 +243,8 @@ extension NewsController: NewsViewModelDelegate {
         
         if viewModelState == .data {
             tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
         }
         
         tableView.reloadData()
@@ -273,6 +275,8 @@ extension NewsController: SearchResultsViewModelDelegate {
 
         if viewModelState == .data {
             tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
         }
 
         tableView.reloadData()
