@@ -19,6 +19,7 @@ struct Sizing {
     
     // MARK: - Space
     
+    static let space2pt: CGFloat = 2
     static let space5pt: CGFloat = 5
     static let space10pt: CGFloat = 10
     static let space11pt: CGFloat = 11
@@ -31,19 +32,16 @@ struct Sizing {
     
     static let cornerRadius10pt: CGFloat = 10
     static let cornerRadius12pt: CGFloat = 12
-    
-    // MARK: Padding
-    
-    static let paddingRow: UIEdgeInsets = .linearSides(v: Sizing.space11pt, h: Sizing.space15pt)
 
     // MARK: Image View
     
     static let imageViewAspectRatio: CGFloat = 2 / 3
-    static let imageViewBase: CGSize = .init(width: 300, height: 200)
+    
     static var imageViewSmall: CGSize = {
         let height: CGFloat = FontType.body1.value.lineHeight + (2 * FontType.body2.value.lineHeight)
         return CGSize.init(width: height / imageViewAspectRatio, height: height)
     }()
+    
     static var imageViewDetail: CGSize = {
         let width: CGFloat = Sizing.oneColumn
         return CGSize.init(width: width, height: width * imageViewAspectRatio)

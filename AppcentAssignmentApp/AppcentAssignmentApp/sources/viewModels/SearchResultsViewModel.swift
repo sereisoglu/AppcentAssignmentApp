@@ -1,5 +1,5 @@
 //
-//  NewsViewModel.swift
+//  SearchResultsViewModel.swift
 //  AppcentAssignmentApp
 //
 //  Created by Saffet Emin Reisoğlu on 29.08.2021.
@@ -8,86 +8,115 @@
 import Foundation
 import NewsAPI
 
-protocol NewsViewModelDelegate: AnyObject {
+protocol SearchResultsViewModelDelegate: AnyObject {
     func getData(error: ErrorModel?)
 }
 
-final class NewsViewModel {
-    weak var delegate: NewsViewModelDelegate?
+final class SearchResultsViewModel {
+    weak var delegate: SearchResultsViewModelDelegate?
     
     private(set) var data: PaginationModel<NewsModel>?
     
-    private(set) var state: InformingState = .loading
+    private(set) var state: InformingState = .data
     
-    func fetchData() {
+    private(set) var query: String = ""
+    
+    init() {
+        reset()
+    }
+    
+    func fetchData(query: String) {
+        guard self.query != query else {
+            return
+        }
+
+        self.query = query
+
         state = .loading
-        
+
         APIService.shared.request(
-            endpoint: .topHeadlines(
-                countryCode: LocalizationUtility.getRegionCode()
+            endpoint: .everything(
+                query: query,
+                languageCode: LocalizationUtility.getLanguageCode()
             ),
             page: 1
         ) { [weak self] (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
-            guard let self = self else {
+            guard let self = self,
+                  query == self.query else {
                 return
             }
-            
+
             switch result {
             case .success(let data):
                 if data?.items.isNotEmpty ?? false {
                     self.state = .data
                 } else {
                     self.state = .emptyOrError(
-                        headerText: "Empty",
-                        messageText: "No news"
+                        headerText: "No Results",
+                        messageText: "for \"\(query)\""
                     )
                 }
-                
+
                 self.data = data
-                
+
                 self.delegate?.getData(error: nil)
-                
+
             case .failure(let error):
                 self.state = .emptyOrError(
                     headerText: error.title ?? "API Error",
                     messageText: error.message ?? "An error has occurred."
                 )
-                
+
                 self.delegate?.getData(error: error)
             }
         }
     }
-    
+
     func fetchDataForPagination() {
+        let query = self.query
+
         data?.setIsPaginating(isPaginating: true)
         data?.increasePage()
-        
+
         APIService.shared.request(
-            endpoint: .topHeadlines(
-                countryCode: LocalizationUtility.getRegionCode()
+            endpoint: .everything(
+                query: query,
+                languageCode: LocalizationUtility.getLanguageCode()
             ),
             page: data?.page ?? 2
         ) { [weak self] (result: Result<PaginationModel<NewsModel>?, ErrorModel>) in
-            guard let self = self else {
+            guard let self = self,
+                  query == self.query else {
                 return
             }
-            
+
             switch result {
             case .success(let data):
                 self.data?.appendItems(items: data?.items)
                 
                 self.delegate?.getData(error: nil)
-                
+
             case .failure(let error):
                 self.state = .emptyOrError(
                     headerText: error.title ?? "API Error",
                     messageText: error.message ?? "An error has occurred."
                 )
-                
+
                 self.delegate?.getData(error: error)
             }
-            
+
             self.data?.setIsPaginating(isPaginating: false)
         }
+    }
+
+    func reset() {
+        data = nil
+
+        state = .emptyOrError(
+            headerText: "Start Searching",
+            messageText: "Search all of AAA for news."
+        )
+
+        query = ""
     }
 }

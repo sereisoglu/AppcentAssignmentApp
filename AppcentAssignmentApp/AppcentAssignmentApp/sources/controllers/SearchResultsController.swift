@@ -1,5 +1,5 @@
 //
-//  NewsController.swift
+//  SearchResultsController.swift
 //  AppcentAssignmentApp
 //
 //  Created by Saffet Emin Reisoğlu on 29.08.2021.
@@ -8,24 +8,15 @@
 import UIKit
 import NewsAPI
 
-final class NewsController: UITableViewController {
-    private let headerCellId = "headerCellId"
+final class SearchResultsController: UITableViewController {
     private let cellId = "cellId"
     private let informingCellId = "informingCellId"
     private let footerCellId = "footerCellId"
     
-    private let viewModel: NewsViewModel
-    
-    private let searchResultsController = SearchResultsController()
-    
-    private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: searchResultsController)
-        controller.searchBar.placeholder = "Search for news"
-        return controller
-    }()
+    private let viewModel: SearchResultsViewModel
     
     init() {
-        viewModel = NewsViewModel()
+        viewModel = SearchResultsViewModel()
         
         super.init(style: .grouped)
     }
@@ -33,28 +24,35 @@ final class NewsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "News"
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Search"
         
         view.backgroundColor = Color.backgroundDefault.value
         tableView.backgroundColor = Color.backgroundDefault.value
         
-        tableView.register(NewsHeaderCell.self, forHeaderFooterViewReuseIdentifier: headerCellId)
         tableView.register(NewsCell.self, forCellReuseIdentifier: cellId)
         tableView.register(InformingCell.self, forCellReuseIdentifier: informingCellId)
         tableView.register(FooterCell.self, forHeaderFooterViewReuseIdentifier: footerCellId)
         
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
-        tableView.separatorStyle = .none
-        
-        searchController.searchBar.delegate = self
         
         viewModel.delegate = self
         
-        viewModel.fetchData()
+        tableView.separatorStyle = .none
+        
+        definesPresentationContext = true
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let selectionIndexPath = self.tableView.indexPathForSelectedRow {
+                self.tableView.deselectRow(at: selectionIndexPath, animated: animated)
+            }
     }
     
     required init?(coder: NSCoder) {
@@ -64,7 +62,7 @@ final class NewsController: UITableViewController {
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 
-extension NewsController {
+extension SearchResultsController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewModel.state {
         case .data:
@@ -107,10 +105,14 @@ extension NewsController {
             return
         }
         
-        navigationController?.hidesBottomBarPushViewController(
+        presentingViewController?.hidesBottomBarWhenPushed = true
+        
+        presentingViewController?.navigationController?.pushViewController(
             NewsDetailController(data: data),
             animated: true
         )
+        
+        presentingViewController?.hidesBottomBarWhenPushed = false
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -123,23 +125,11 @@ extension NewsController {
             return 300
         }
     }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerCellId) as! NewsHeaderCell
-        
-        header.setData(text: "Top Headlines (\(LocalizationUtility.getRegionCode().uppercased()))")
-        
-        return header
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Sizing.space10pt + FontType.title3.value.lineHeight + Sizing.space10pt
-    }
 }
 
 // MARK: - Pagination
 
-extension NewsController {
+extension SearchResultsController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerCellId) as! FooterCell
         
@@ -175,7 +165,7 @@ extension NewsController {
 
 // MARK: - NewsViewModelDelegate
 
-extension NewsController: NewsViewModelDelegate {
+extension SearchResultsController: SearchResultsViewModelDelegate {
     func getData(error: ErrorModel?) {
         guard error == nil else {
             print(error?.message ?? "")
@@ -199,20 +189,22 @@ extension NewsController: NewsViewModelDelegate {
     }
 }
 
-// MARK: - UISearchBarDelegate
+// MARK: - Search Results
 
-extension NewsController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchResultsController.searchButtonTapped(searchBar)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchResultsController.cancelButtonTapped(searchBar)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText == "" {
-            searchResultsController.cancelButtonTapped(searchBar)
+extension SearchResultsController {
+    func searchButtonTapped(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else {
+            return
         }
+        
+        viewModel.fetchData(query: text)
+        
+        tableView.reloadData()
+    }
+    
+    func cancelButtonTapped(_ searchBar: UISearchBar) {
+        viewModel.reset()
+        
+        tableView.reloadData()
     }
 }

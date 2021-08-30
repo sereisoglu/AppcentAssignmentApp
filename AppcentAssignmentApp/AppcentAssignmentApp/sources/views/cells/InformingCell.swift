@@ -18,6 +18,7 @@ final class InformingCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .clear
+        selectionStyle = .none
         
         hstack(
             stack(

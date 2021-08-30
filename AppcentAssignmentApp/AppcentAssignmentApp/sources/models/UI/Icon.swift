@@ -14,6 +14,7 @@ enum Icon: String {
     case newspaperFill = "newspaper-fill"
     case newspaper
     case personFill = "person-fill"
+    case photo
     case squareAndArrowUp = "square-and-arrow-up"
     
     var value: UIImage {

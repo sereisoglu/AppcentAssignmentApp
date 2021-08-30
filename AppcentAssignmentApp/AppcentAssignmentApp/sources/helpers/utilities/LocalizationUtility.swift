@@ -15,4 +15,8 @@ final class LocalizationUtility {
     class func getLanguageCode() -> String {
         return Locale.current.languageCode ?? "en"
     }
+    
+    class func getTimeZoneIdentifier() -> String {
+        return TimeZone.current.identifier
+    }
 }

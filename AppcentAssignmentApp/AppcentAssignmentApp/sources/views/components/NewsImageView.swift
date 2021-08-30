@@ -10,59 +10,38 @@ import LBTATools
 import Nuke
 
 final class NewsImageView: UIView {
-    enum `Type` {
-        case small
-        case detail
-        
-        var size: CGSize {
-            switch self {
-            case .small:
-                return Sizing.imageViewSmall
-            case .detail:
-                return Sizing.imageViewDetail
-            }
-        }
-        
-        var cornerRadiues: CGFloat {
-            switch self {
-            case .small:
-                return Sizing.cornerRadius10pt
-            case .detail:
-                return Sizing.cornerRadius12pt
-            }
-        }
-    }
-    
+    private let iconView = IconImageView(size: .pt30, icon: .photo, tintColor: .tintSecondary)
     private let imageView = UIImageView(contentMode: .scaleAspectFill)
     
-    private let label = Label(text: nil, type: .title3, weight: .bold, color: .tintSecondary, alignment: .center, numberOfLines: 5)
-    private let backgroundView = UIView(backgroundColor: Color.fillPrimary.value) // for scale transform
-    
-    init(type: Type) {
+    init() {
         super.init(frame: CGRect.zero)
         
-        let aspectRatio = type.size.width / Sizing.imageViewBase.width
+        backgroundColor = Color.fillPrimary.value
         
-        layer.cornerRadius = type.cornerRadiues
+        layer.cornerRadius = Sizing.cornerRadius10pt
         if #available(iOS 13.0, *) {
             layer.cornerCurve = .continuous
         }
         clipsToBounds = true
         
-        withSize(type.size)
+        layer.borderWidth = 2
+        layer.borderColor = Color.tintPrimary.value.withAlphaComponent(0.25).cgColor
+        frame = imageView.frame.insetBy(dx: -2, dy: -2)
         
-        backgroundView.withSize(Sizing.imageViewBase)
-        backgroundView.addCenterInSuperview(superview: self)
-        
-        label.withWidth(Sizing.imageViewBase.width - (2 * Sizing.space10pt))
-        label.addCenterInSuperview(superview: backgroundView)
+        iconView.addCenterInSuperview(superview: self)
         
         imageView.addFillSuperview(superview: self)
-        
-        backgroundView.transform = CGAffineTransform(scaleX: aspectRatio, y: aspectRatio)
     }
     
-    func setData(imageUrl: String?, name: String) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+       if #available(iOS 13.0, *) {
+           if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+               layer.borderColor = Color.tintPrimary.value.withAlphaComponent(0.25).cgColor
+           }
+       }
+    }
+    
+    func setData(imageUrl: String?) {
         imageView.isHidden = true
         
         if let imageUrl = imageUrl,
@@ -86,8 +65,6 @@ final class NewsImageView: UIView {
                 }
             }
         }
-        
-        label.setData(text: name)
     }
     
     func imageDownloadCancel() {
@@ -98,4 +75,3 @@ final class NewsImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
