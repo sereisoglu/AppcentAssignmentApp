@@ -12,7 +12,7 @@ public typealias NewsModels = [NewsModel]
 public struct NewsModel: Decodable {
     public var id: String
     
-    public var source: NewsSourceModel?
+    public var sourceName: String?
     public var author: String?
     public var title: String?
     public var description: String?
@@ -32,10 +32,34 @@ public struct NewsModel: Decodable {
         case content
     }
     
+    public init(
+        id: String,
+        sourceName: String?,
+        author: String?,
+        title: String?,
+        description: String?,
+        url: String?,
+        imageUrl: String?,
+        publishedAt: String?,
+        content: String?
+    ) {
+        self.id = id
+        self.sourceName = sourceName
+        self.author = author
+        self.title = title
+        self.description = description
+        self.url = url
+        self.imageUrl = imageUrl
+        self.publishedAt = publishedAt
+        self.content = content
+    }
+    
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        source = try values.decode(NewsSourceModel?.self, forKey: .source)
+        let source = try values.decode(NewsSourceModel?.self, forKey: .source)
+        
+        sourceName = source?.name
         author = try values.decode(String?.self, forKey: .author)
         title = try values.decode(String?.self, forKey: .title)
         description = try values.decode(String?.self, forKey: .description)
@@ -45,6 +69,10 @@ public struct NewsModel: Decodable {
         content = try values.decode(String?.self, forKey: .content)
         
         id = "\(title ?? "")-\(publishedAt ?? "")"
+        
+        if author == "" {
+            author = nil
+        }
     }
 }
 

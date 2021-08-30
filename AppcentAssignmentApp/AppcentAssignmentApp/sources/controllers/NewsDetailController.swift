@@ -18,7 +18,7 @@ final class NewsDetailController: UITableViewController {
     
     init(data: NewsModel) {
         self.data = data
-        self.isFavorite = FavoriteManager.shared.isFavorite(id: data.id)
+        self.isFavorite = CoreDataManager.shared.hasNews(id: data.id)
         
         super.init(style: .grouped)
     }
@@ -26,7 +26,7 @@ final class NewsDetailController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = data.source?.name ?? ""
+        navigationItem.title = data.sourceName ?? ""
         navigationItem.largeTitleDisplayMode = .never
         
         view.backgroundColor = Color.backgroundDefault.value
@@ -54,9 +54,9 @@ final class NewsDetailController: UITableViewController {
         isFavorite.toggle()
         
         if isFavorite {
-            FavoriteManager.shared.append(news: data)
+            CoreDataManager.shared.createNews(data: data)
         } else {
-            FavoriteManager.shared.remove(id: data.id)
+            CoreDataManager.shared.deleteNews(id: data.id)
         }
         
         setUpRightBarButtonItems()
@@ -114,7 +114,7 @@ extension NewsDetailController {
             let cell = tableView.dequeueReusableCell(withIdentifier: redirectCellId, for: indexPath) as! NewsDetailRedirectCell
             
             cell.setData(
-                sourceText: data.source?.name ?? "News Source"
+                sourceText: data.sourceName ?? "News Source"
             )
             
             return cell

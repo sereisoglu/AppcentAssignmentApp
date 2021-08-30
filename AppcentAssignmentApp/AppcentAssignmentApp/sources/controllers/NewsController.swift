@@ -118,7 +118,7 @@ extension NewsController {
                     imageUrl: item.imageUrl,
                     titleText: item.title ?? "No title",
                     descriptionText: item.description,
-                    sourceAndDateText: "\(item.source?.name ?? "") • \(DateUtility.stringFormat(convertType: .monthAndDayAndYearAndDayNameAndTime, dateString: item.publishedAt) ?? "")"
+                    sourceAndDateText: "\(item.sourceName ?? "") • \(DateUtility.stringFormat(convertType: .monthAndDayAndYearAndDayNameAndTime, dateString: item.publishedAt) ?? "")"
                 )
             }
             

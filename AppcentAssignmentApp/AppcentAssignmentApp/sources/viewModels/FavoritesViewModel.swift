@@ -19,8 +19,35 @@ final class FavoritesViewModel {
     
     private(set) var state: InformingState = .loading
     
+    private var observers = [NSObjectProtocol]()
+    
+    init() {
+        setUpObservers()
+    }
+    
+    private func setUpObservers() {
+        guard observers.isEmpty else {
+            return
+        }
+        
+        observers = [
+            NotificationCenter.default.addObserver(
+                forName: .updateFavoriteNews,
+                object: nil,
+                queue: .main,
+                using: { [weak self] (notification) in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.fetchData()
+                }
+            )
+        ]
+    }
+    
     func fetchData() {
-        data = FavoriteManager.shared.favoriteNewsData
+        data = CoreDataManager.shared.getDatas()
         
         if data.isNotEmpty {
             self.state = .data
@@ -32,5 +59,11 @@ final class FavoritesViewModel {
         }
         
         delegate?.getDataForFavoritesViewModel()
+    }
+    
+    deinit {
+        observers.forEach { (observer) in
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 }

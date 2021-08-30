@@ -15,8 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         
+        CoreDataManager.shared.fetchData()
+        
         window?.rootViewController = TabBarController()
         
         return true
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        CoreDataManager.shared.saveContext()
     }
 }
