@@ -14,7 +14,7 @@ public final class NewsAPI {
     
     let BASE_URL = "https://newsapi.org"
     var API_KEY = ""
-    var API_PAGE_LIMIT = 0
+    var API_PAGE_LIMIT = 20
     
     public func setUp(apiKey: String, pageLimit: Int) {
         self.API_KEY = apiKey
