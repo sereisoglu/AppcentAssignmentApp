@@ -33,7 +33,7 @@
 		4A36A56226DBE6C40077BC67 /* NewsDetailHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56126DBE6C40077BC67 /* NewsDetailHeaderCell.swift */; };
 		4A36A56426DBE6D00077BC67 /* NewsDetailBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56326DBE6D00077BC67 /* NewsDetailBodyCell.swift */; };
 		4A36A56626DBED890077BC67 /* NewsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56526DBED890077BC67 /* NewsHeaderCell.swift */; };
-		4A36A56826DBF02C0077BC67 /* DataUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56726DBF02C0077BC67 /* DataUtility.swift */; };
+		4A36A56826DBF02C0077BC67 /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56726DBF02C0077BC67 /* DateUtility.swift */; };
 		4A36A56A26DBF0FD0077BC67 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56926DBF0FD0077BC67 /* DateFormatter+Extension.swift */; };
 		4A36A56C26DBF1B80077BC67 /* DateFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56B26DBF1B80077BC67 /* DateFormatType.swift */; };
 		4A36A56E26DC36330077BC67 /* NewsDetailRedirectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36A56D26DC36330077BC67 /* NewsDetailRedirectCell.swift */; };
@@ -131,7 +131,7 @@
 		4A36A56126DBE6C40077BC67 /* NewsDetailHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailHeaderCell.swift; sourceTree = "<group>"; };
 		4A36A56326DBE6D00077BC67 /* NewsDetailBodyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailBodyCell.swift; sourceTree = "<group>"; };
 		4A36A56526DBED890077BC67 /* NewsHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderCell.swift; sourceTree = "<group>"; };
-		4A36A56726DBF02C0077BC67 /* DataUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUtility.swift; sourceTree = "<group>"; };
+		4A36A56726DBF02C0077BC67 /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
 		4A36A56926DBF0FD0077BC67 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		4A36A56B26DBF1B80077BC67 /* DateFormatType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatType.swift; sourceTree = "<group>"; };
 		4A36A56D26DC36330077BC67 /* NewsDetailRedirectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailRedirectCell.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 				4A36A53426DBA7A10077BC67 /* AttributedStringUtility.swift */,
 				4A36A52A26DBA2DB0077BC67 /* LocalizationUtility.swift */,
 				4A36A55F26DBE6840077BC67 /* AlertUtility.swift */,
-				4A36A56726DBF02C0077BC67 /* DataUtility.swift */,
+				4A36A56726DBF02C0077BC67 /* DateUtility.swift */,
 				4A36A56F26DC37720077BC67 /* BrowserUtility.swift */,
 			);
 			path = utilities;
@@ -612,7 +612,7 @@
 				4A36A54F26DBB3AE0077BC67 /* FavoritesViewModel.swift in Sources */,
 				4A36A53B26DBA7E40077BC67 /* Text.swift in Sources */,
 				4A684E3A26DCF60F00C745BE /* NotificationName+Extension.swift in Sources */,
-				4A36A56826DBF02C0077BC67 /* DataUtility.swift in Sources */,
+				4A36A56826DBF02C0077BC67 /* DateUtility.swift in Sources */,
 				4AA6BBC526DB9A2800AC8D96 /* FavoritesController.swift in Sources */,
 				4A36A55C26DBC0250077BC67 /* SearchResultsViewModel.swift in Sources */,
 				4A36A53326DBA7870077BC67 /* Label.swift in Sources */,

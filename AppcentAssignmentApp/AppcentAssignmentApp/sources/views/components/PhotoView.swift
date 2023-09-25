@@ -34,11 +34,10 @@ final class PhotoView: UIView {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-       if #available(iOS 13.0, *) {
-           if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
-               layer.borderColor = Color.tintPrimary.value.withAlphaComponent(0.25).cgColor
-           }
-       }
+        if #available(iOS 13.0, *),
+           traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            layer.borderColor = Color.tintPrimary.value.withAlphaComponent(0.25).cgColor
+        }
     }
     
     func setData(imageUrl: String?) {

@@ -1,5 +1,5 @@
 //
-//  DataUtility.swift
+//  DateUtility.swift
 //  AppcentAssignmentApp
 //
 //  Created by Saffet Emin Reisoğlu on 29.08.2021.
@@ -26,13 +26,7 @@ final class DateUtility {
             return nil
         }
         
-        date.addTimeInterval(
-            TimeInterval(
-                TimeZone(
-                    identifier: LocalizationUtility.getTimeZoneIdentifier()
-                )?.secondsFromGMT() ?? 0
-            )
-        )
+        date.addTimeInterval(TimeInterval(TimeZone(identifier: LocalizationUtility.getTimeZoneIdentifier())?.secondsFromGMT() ?? 0))
         
         let dateFormatter: DateFormatter
         switch convertType {

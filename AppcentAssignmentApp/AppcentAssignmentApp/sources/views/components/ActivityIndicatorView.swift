@@ -27,14 +27,14 @@ final class ActivityIndicatorView: UIView {
             isHidden = !animating
             
             if animating {
-                activityIndicatorViewView.startAnimating()
+                activityIndicatorView.startAnimating()
             } else {
-                activityIndicatorViewView.stopAnimating()
+                activityIndicatorView.stopAnimating()
             }
         }
     }
     
-    private let activityIndicatorViewView = UIActivityIndicatorView(style: .gray)
+    private let activityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     init(
         size: Size,
@@ -44,15 +44,15 @@ final class ActivityIndicatorView: UIView {
         
         isHidden = true
         
-        activityIndicatorViewView.hidesWhenStopped = true
-        activityIndicatorViewView.isUserInteractionEnabled = false
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.isUserInteractionEnabled = false
         
         let aspectRatio = size.value.width / Size.pt20.value.width
-        activityIndicatorViewView.transform = CGAffineTransform(scaleX: aspectRatio, y: aspectRatio)
+        activityIndicatorView.transform = CGAffineTransform(scaleX: aspectRatio, y: aspectRatio)
         
         withSize(size.value)
         
-        activityIndicatorViewView.addCenterInSuperview(superview: self)
+        activityIndicatorView.addCenterInSuperview(superview: self)
         
         if let tintColor = tintColor {
             setData(tintColor: tintColor)
@@ -60,7 +60,7 @@ final class ActivityIndicatorView: UIView {
     }
     
     func setData(tintColor: Color) {
-        activityIndicatorViewView.color = tintColor.value
+        activityIndicatorView.color = tintColor.value
     }
     
     required init?(coder: NSCoder) {

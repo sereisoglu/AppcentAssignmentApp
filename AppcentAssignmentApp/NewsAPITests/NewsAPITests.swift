@@ -9,9 +9,9 @@ import XCTest
 @testable import NewsAPI
 
 class NewsAPITests: XCTestCase {
-
+    
     func test_TopHeadlines_Success() {
-        let expectation = expectation(description: "test_TopHeadlines_Success")
+        let expectation = expectation(description: #function)
         
         NewsAPI.shared.request(
             endpoint: .topHeadlines(
@@ -34,7 +34,7 @@ class NewsAPITests: XCTestCase {
     }
     
     func test_Everything_Success() {
-        let expectation = expectation(description: "test_Everything_Success")
+        let expectation = expectation(description: #function)
         
         NewsAPI.shared.request(
             endpoint: .everything(
@@ -56,5 +56,5 @@ class NewsAPITests: XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
     }
-
+    
 }
